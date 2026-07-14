@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { TaskService } from '../../services/task.service';
@@ -6,12 +5,13 @@ import { ToastService } from '../../services/toast.service';
 import { StatusCatalogItem, Task } from 'src/app/entities';
 import { Router } from '@angular/router';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { TaskFormModalComponent } from "../task-form-modal/task-form-modal.component";
+import { KanbanItemComponent } from './kanban-item/kanban-item.component';
 
 @Component({
   selector: 'app-kanban',
-  imports: [DatePipe, DragDropModule, ReactiveFormsModule, TaskFormModalComponent],
+  imports: [DragDropModule, ReactiveFormsModule, TaskFormModalComponent, KanbanItemComponent],
   templateUrl: './kanban.component.html',
   styleUrl: './kanban.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -35,6 +35,7 @@ export class KanbanComponent implements OnInit {
   protected isLoading = false;
   protected errorMessage: string | null = null;
   protected isCreateModalOpen = false;
+  protected taskModalParam: Task | null = null;
 
   ngOnInit(): void {
     this.loadTasks();
@@ -48,9 +49,16 @@ export class KanbanComponent implements OnInit {
 
   public closeCreateModal(success: boolean): void {
     this.isCreateModalOpen = false;
+    this.taskModalParam = null;
     if (success) {
       this.loadTasks();
     }
+    this.changeDetectorRef.markForCheck();
+  }
+
+  public onEditTask(task: Task) {
+    this.isCreateModalOpen = true;
+    this.taskModalParam = task;
     this.changeDetectorRef.markForCheck();
   }
 

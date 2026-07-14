@@ -60,18 +60,7 @@
               </div>
             } @else {
               @for (task of mappedTask.tasks; track task.id) {
-                <div cdkDrag class="rounded-2xl border border-slate-700 bg-mist-300/80 p-4 shadow-sm">
-                  <div class="flex items-start justify-between gap-3">
-                    <div>
-                      <h3 class="font-semibold ">{{ task.name }}</h3>
-                      <p class="mt-1 text-sm ">{{ task.description }}</p>
-                    </div>
-                  </div>
-                  <div class="mt-3 flex items-center justify-between text-xs ">
-                    <span>Due {{ task.dueDate | date:'shortDate' }}</span>
-                    <span>{{ task.assignedTo?.username ?? 'Unassigned' }}</span>
-                  </div>
-                </div>
+                <app-kanban-item cdkDrag [task]="task" (onEditEvt)="onEditTask($event)"></app-kanban-item>
               }
             }
           </div>
@@ -83,6 +72,7 @@
 
 @if (isCreateModalOpen) {
   <app-task-form-modal
+   [task]="taskModalParam"
    [statuses]="statuses"
    (onCloseEvt)="closeCreateModal($event)"
     ></app-task-form-modal>
