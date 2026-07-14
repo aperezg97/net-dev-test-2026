@@ -10,6 +10,4 @@ import { environment } from '../environments/environment';
 })
 export class App {
   protected readonly title = signal('TaskAppUI');
-
-  protected readonly env = environment.apiUrl;
 }
