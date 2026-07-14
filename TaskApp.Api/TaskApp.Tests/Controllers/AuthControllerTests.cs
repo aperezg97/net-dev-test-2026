@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using TaskApp.Business.Queries;
+using TaskApp.Controllers;
+using TaskApp.Entities.Dtos;
+using TaskApp.Interfaces;
 
 namespace TaskApp.Tests.Controllers
 {
     public class AuthControllerTests
     {
         [Fact]
-        public void AuthController_ShouldDoLogin()
+        public async Task AuthController_ShouldDoLoginAsync()
         {
             var user = new UserDto()
             {
@@ -16,19 +22,31 @@ namespace TaskApp.Tests.Controllers
                 LastName = "User",
                 Email = ""
             };
-            
-            var controller = new AuthController();
+            var mockUserContext = new Mock<IUserContext>();
+            var mockTokenProviderService = new Mock<ITokenProviderSevice>();
+            mockTokenProviderService
+                .Setup(m => m.GenerateToken(It.Is<string>(x => x == user.Id.ToString()), It.Is<string>(x => x == user.Email)))
+                .Returns("hash-password");
+            var mockSender = new Mock<ISender>();
+            mockSender.Setup(m => m.Send(
+                It.IsAny<LoginQuery>(),
+                It.IsAny<CancellationToken>()
+            )).ReturnsAsync(new BaseResponseDto<UserDto> { Success = true, Data = user });
+
+
+            var controller = new AuthController(mockUserContext.Object, mockTokenProviderService.Object);
             var loginDto = new LoginDto()
             {
                 User = "testuser",
                 Pass = "testpass",
             };
-            var result = controller.Login(loginDto);
+            var result = await controller.Login(loginDto, mockSender.Object);
+
 
             Assert.NotNull(result);
-            var innerResult = (result.Result as OkObjectResult).Value as LoginResponseDto;
-            Assert.Equal(System.Threading.Tasks.Task.CompletedTask.Status, result.Status);
+            var innerResult = (result! as OkObjectResult)!.Value as BaseResponseDto<LoginResponseDto>;
             Assert.True(innerResult!.Success);
+            Assert.NotEmpty(innerResult!.Data!.Token);
         }
     }
 }

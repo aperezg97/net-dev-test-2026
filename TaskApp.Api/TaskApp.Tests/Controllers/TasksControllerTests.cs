@@ -1,16 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using TaskApp.Entities.Dtos;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using TaskApp.Business.Commands.Tasks;
+using TaskApp.Controllers;
 
 namespace TaskApp.Tests.Controllers
 {
     public class TasksControllerTests
     {
         [Fact]
-        public void TasksController_ShouldCreateTask()
+        public async Task TasksController_ShouldCreateTaskAsync()
         {
             var taskParam = new TaskDto
             {
@@ -35,13 +35,16 @@ namespace TaskApp.Tests.Controllers
                 Success = true,
                 Message = "Task created successfully"
             };
-            
+            var mediatorMock = new Mock<IMediator>();
+            mediatorMock
+            .Setup(m => m.Send(It.IsAny<CreateTaskCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(expectedResponse);
+
             var controller = new TaskController();
-            var result = controller.Create(taskParam);
+            var result = await controller.Create(taskParam, mediatorMock.Object);
 
             Assert.NotNull(result);
-            var innerResult = (result.Result as OkObjectResult).Value as BaseResponseDto<TaskDto>;
-            Assert.Equal(System.Threading.Tasks.Task.CompletedTask.Status, result.Status);
+            var innerResult = (result! as OkObjectResult)!.Value as BaseResponseDto<TaskDto>;
             Assert.True(innerResult!.Success);
             Assert.NotEmpty(innerResult!.Data!.Id.ToString());
         }
