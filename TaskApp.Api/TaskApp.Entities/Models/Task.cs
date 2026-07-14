@@ -22,6 +22,7 @@ namespace TaskApp.Entities.Models
                 DueDate = taskDto.DueDate,
                 AssignedToId = taskDto.AssignedToId,
                 StatusId = taskDto.StatusId,
+                IsActive = taskDto.IsActive,
                 CreatedAt = taskDto.CreatedAt,
                 UpdatedAt = taskDto.UpdatedAt,
                 Status = taskDto.Status != null ? new StatusCatalogItem

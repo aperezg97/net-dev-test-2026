@@ -34,6 +34,13 @@ namespace TaskApp.Data.Repositories
             return task;
         }
 
+        public List<Entities.Models.Task> UpdateTaskRange(List<Entities.Models.Task> tasks)
+        {
+            _applicationDbContext.Tasks.UpdateRange(tasks);
+            _applicationDbContext.SaveChanges();
+            return tasks;
+        }
+
         public List<Entities.Models.Task> GetAllTasks(bool activeOnly)
         {
             var iqueryable = _applicationDbContext.Tasks.Include(x => x.AssignedTo).AsQueryable();

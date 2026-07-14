@@ -19,20 +19,20 @@ namespace TaskApp.Business.Queries
             // _passwordHelper = new PasswordHelper(new PasswordHasher<User>());
         }
 
-        public Task<BaseResponseDto<UserDto>> Handle(LoginQuery loginQuery, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<UserDto>> Handle(LoginQuery loginQuery, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(loginQuery.login.User) || string.IsNullOrEmpty(loginQuery.login.Pass))
             {
-                return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<UserDto>()
+                return (new BaseResponseDto<UserDto>()
                 {
                     Success = false,
                     Message = "Username and password are required",
                 });
             }
-            var userMatched = _userRepository.GetUserByUsername(loginQuery.login.User);
+            var userMatched = await _userRepository.GetUserByUsernameAsync(loginQuery.login.User);
             if (userMatched == null)
             {
-                return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<UserDto>()
+                return (new BaseResponseDto<UserDto>()
                 {
                     Success = false,
                     Message = "User not found",
@@ -42,7 +42,7 @@ namespace TaskApp.Business.Queries
             var result = _passwordHelper.VerifyPassword(userMatched, userMatched.Password, loginQuery.login.Pass);
             // var pass = _passwordHelper.HashPassword(userMatched, userMatched.Password);
             var message = (result ? "Login successful" : "Invalid username or password");
-            return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<UserDto>()
+            return (new BaseResponseDto<UserDto>()
             {
                 Data = UserDto.FromUser(userMatched),
                 Success = result,

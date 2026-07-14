@@ -13,18 +13,18 @@ namespace TaskApp.Business.Commands.Users
             _userRepository = userRepository;
         }
 
-        public Task<BaseResponseDto<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             var userModel = CreateUserDto.FromCreateUserDto(request.userData);
-            var user = _userRepository.AddUser(userModel);
+            var user = await _userRepository.AddUserAsync(userModel);
             var userRes = UserDto.FromUser(user);
             userRes.Password = null; // Do not return the password in the response
-            return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<UserDto>()
+            return new BaseResponseDto<UserDto>()
             {
                 Data = userRes,
                 Success = true,
                 Message = "User created successfully"
-            });
+            };
         }
     }
 }

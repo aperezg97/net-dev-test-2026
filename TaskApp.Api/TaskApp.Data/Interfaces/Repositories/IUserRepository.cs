@@ -4,9 +4,10 @@ namespace TaskApp.Data.Interfaces.Repositories
 {
     public interface IUserRepository
     {
-        public User AddUser(Entities.Models.User user);
-        public User? GetUserByUsername(string username);
-        public User? GetUserById(Guid id);
-        public void UpdateUser(User user);
+        public Task<User> AddUserAsync(Entities.Models.User user);
+        public Task<User?> GetUserByUsernameAsync(string username);
+        public Task<User?> GetUserByIdAsync(Guid id);
+        public Task<List<User>> GetUsersAsync();
+        public System.Threading.Tasks.Task UpdateUserAsync(User user);
     }
 }

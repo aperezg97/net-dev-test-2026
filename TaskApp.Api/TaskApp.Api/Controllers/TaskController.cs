@@ -28,6 +28,14 @@ namespace TaskApp.Controllers
             return Ok(result);
         }
 
+        [HttpPut("range")]
+        public async Task<IActionResult> UpdateRange([FromBody] List<TaskDto> data, ISender mediator)
+        {
+            var command = new UpdateTaskRangeCommand(data);
+            BaseResponseDto<List<TaskDto>> result = await mediator.Send(command);
+            return Ok(result);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAll(ISender mediator, [FromQuery] bool onlyActives = true)
         {

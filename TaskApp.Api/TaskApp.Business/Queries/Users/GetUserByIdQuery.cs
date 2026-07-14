@@ -13,14 +13,14 @@ namespace TaskApp.Business.Queries.Users
             _userRepository = userRepository;
         }
 
-        public Task<BaseResponseDto<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<BaseResponseDto<UserDto>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var result = _userRepository.GetUserById(request.userId);
-            return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<UserDto>
+            var result = await _userRepository.GetUserByIdAsync(request.userId);
+            return new BaseResponseDto<UserDto>
             {
                 Data = result != null ? UserDto.FromUser(result) : null,
                 Success = result != null,
-            });
+            };
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using TaskApp.Data.Contexts;
 using TaskApp.Data.Interfaces.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace TaskApp.Data.Repositories
 {
@@ -15,27 +16,32 @@ namespace TaskApp.Data.Repositories
             _applicationDbContext = applicationDbContext;
         }
 
-        public User AddUser(Entities.Models.User user)
+        public async Task<User> AddUserAsync(Entities.Models.User user)
         {
             _applicationDbContext.Users.Add(user);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
             return user;
         }
 
-        public User? GetUserByUsername(string username)
+        public async Task<User?> GetUserByUsernameAsync(string username)
         {
-            return _applicationDbContext.Users.FirstOrDefault(u => u.Username.ToLower() == username.ToLower());
+            return await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
         }
 
-        public User? GetUserById(Guid id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
-            return _applicationDbContext.Users.FirstOrDefault(u => u.Id == id);
+            return await _applicationDbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public void UpdateUser(User user)
+        public async Task<List<User>> GetUsersAsync()
+        {
+            return await _applicationDbContext.Users.ToListAsync();
+        }
+
+        public async System.Threading.Tasks.Task UpdateUserAsync(User user)
         {
             _applicationDbContext.Users.Update(user);
-            _applicationDbContext.SaveChanges();
+            await _applicationDbContext.SaveChangesAsync();
         }
     }
 }

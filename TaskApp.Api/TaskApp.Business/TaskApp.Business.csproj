@@ -16,4 +16,8 @@
 		<ProjectReference Include="..\TaskApp.Entities\TaskApp.Entities.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Queries\NewFolder\" />
+	</ItemGroup>
+
 </Project>

@@ -12,9 +12,23 @@ namespace TaskApp.Business.Commands.Tasks
         }
         public System.Threading.Tasks.Task<BaseResponseDto<TaskDto>> Handle(UpdateTaskCommand request, System.Threading.CancellationToken cancellationToken)
         {
-            var taskModel = Entities.Models.Task.FromTaskDto(request.taskData);
-            var task = _taskRepository.UpdateTask(taskModel);
-            var taskRes = TaskDto.FromTask(task);
+            var currentTask = _taskRepository.GetTaskById(request.taskData.Id);
+            if (currentTask == null)
+            {
+                return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<TaskDto>()
+                {
+                    Success = false,
+                    Message = $"Task with ID: {request.taskData.Id} was not found."
+                });
+            }
+            currentTask.Name = request.taskData.Name;
+            currentTask.Description = request.taskData.Description;
+            currentTask.DueDate = request.taskData.DueDate;
+            currentTask.StatusId = request.taskData.StatusId;
+            currentTask.AssignedToId = request.taskData.AssignedToId;
+            currentTask.UpdatedAt = DateTime.UtcNow;
+            _taskRepository.UpdateTask(currentTask);
+            var taskRes = TaskDto.FromTask(currentTask);
             return System.Threading.Tasks.Task.FromResult(new BaseResponseDto<TaskDto>()
             {
                 Data = taskRes,
