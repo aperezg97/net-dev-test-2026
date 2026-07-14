@@ -1,0 +1,89 @@
+<section class="min-h-screen bg-white px-6 py-10 ">
+  <div class="mx-auto max-w-6xl space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-slate-800 bg-mist-200 p-6">
+      <div class="text-gray-600">
+        <p class="text-sm uppercase tracking-[0.3em]">Kanban board</p>
+        <h1 class="text-3xl font-semibold">Your tasks</h1>
+      </div>
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          class="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-medium text-gray-600 transition hover:border-slate-900 hover:font-bold"
+          (click)="openCreateModal()"
+        >
+          New task
+        </button>
+        <button
+          type="button"
+          class="rounded-2xl border border-slate-700 px-4 py-2 text-sm font-medium text-gray-600 transition hover:border-slate-900 hover:font-bold"
+          (click)="logout()"
+        >
+          Sign out
+        </button>
+      </div>
+    </div>
+
+    @if (errorMessage) {
+      <div class="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-300">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (toastService.toasts().length) {
+      <div class="flex flex-col gap-2">
+        @for (toast of toastService.toasts(); track toast.id) {
+          <div class="rounded-2xl border px-4 py-3 text-sm shadow-sm" [class.border-emerald-500/40]="toast.type === 'success'" [class.bg-emerald-500/10]="toast.type === 'success'" [class.text-emerald-700]="toast.type === 'success'" [class.border-rose-500/40]="toast.type === 'error'" [class.bg-rose-500/10]="toast.type === 'error'" [class.text-rose-700]="toast.type === 'error'" [class.border-slate-700]="toast.type === 'info'" [class.bg-slate-100]="toast.type === 'info'" [class.text-slate-700]="toast.type === 'info'">
+            {{ toast.message }}
+          </div>
+        }
+      </div>
+    }
+
+    <div cdkDropListGroup class="grid gap-6 md:grid-cols-4">
+      @for (mappedTask of mappedTasks; track mappedTask.status.id) {
+        <div cdkDropList
+          [cdkDropListData]="mappedTask.tasks"
+          (cdkDropListDropped)="drop($event)"
+           class="rounded-3xl border border-slate-800 bg-mist-200/70 text-gray-600 p-5">
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-lg font-semibold">{{ mappedTask.status.name }}</h2>
+            <span class="rounded-full bg-mist-400 px-3 py-1 text-xs ">{{ mappedTask.tasks.length }}</span>
+          </div>
+          <div class="space-y-3">
+            @if (isLoading) {
+              <div class="rounded-2xl border border-dashed border-slate-700 p-4 text-sm ">
+                Loading tasks...
+              </div>
+            } @else if (mappedTask.tasks.length === 0) {
+              <div class="rounded-2xl border border-dashed border-slate-700 p-4 text-sm ">
+                No tasks yet.
+              </div>
+            } @else {
+              @for (task of mappedTask.tasks; track task.id) {
+                <div cdkDrag class="rounded-2xl border border-slate-700 bg-mist-300/80 p-4 shadow-sm">
+                  <div class="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 class="font-semibold ">{{ task.name }}</h3>
+                      <p class="mt-1 text-sm ">{{ task.description }}</p>
+                    </div>
+                  </div>
+                  <div class="mt-3 flex items-center justify-between text-xs ">
+                    <span>Due {{ task.dueDate | date:'shortDate' }}</span>
+                    <span>{{ task.assignedTo?.username ?? 'Unassigned' }}</span>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+@if (isCreateModalOpen) {
+  <app-task-form-modal
+   [statuses]="statuses"
+   (onCloseEvt)="closeCreateModal($event)"
+    ></app-task-form-modal>
+}

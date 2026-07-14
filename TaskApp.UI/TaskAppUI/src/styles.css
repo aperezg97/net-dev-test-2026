@@ -1,3 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import 'tailwindcss';
+
+/* Style for the invisible box substitute placeholder being hovered over */
+.cdk-drag-placeholder {
+  opacity: 0.3;
+  border: 2px dashed #818cf8 !important;
+  background: transparent !important;
+}
+
+/* Style for the active element being floatingly moved by pointer */
+.cdk-drag-preview {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+  border-radius: 0.5rem;
+  background-color: #475569;
+  color: #f8fafc;
+  pointer-events: none;
+}
+
+/* Smooth transition when sorting items inside a settled list container */
+.cdk-drop-list-receiving .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Smooth fallback transition when releasing an item back to safety */
+.cdk-drag-animating {
+  transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+}

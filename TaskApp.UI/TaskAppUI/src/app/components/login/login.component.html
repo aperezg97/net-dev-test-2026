@@ -1,5 +1,5 @@
 <section class="flex min-h-screen items-center justify-center bg-white px-4 py-12 text-slate-50">
-  <div class="w-full max-w-md rounded-3xl border border-slate-800 bg-mist-200/90 p-8 shadow-2xl shadow-slate-950/60">
+  <div class="w-full max-w-md rounded-3xl border border-slate-800 bg-mist-100/90 p-8 shadow-2xl shadow-slate-950/60">
     <div class="mb-8 space-y-2 text-gray-600">
       <p class="text-sm font-semibold uppercase tracking-[0.3em]">Task App</p>
       <h1 class="text-3xl font-semibold">Welcome</h1>
@@ -13,7 +13,7 @@
           id="username"
           type="text"
           formControlName="username"
-          class="w-full rounded-2xl border border-slate-700 bg-mist-400 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-b-blue-900"
+          class="w-full rounded-2xl border border-slate-700 bg-mist-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-b-blue-900"
           placeholder="Enter your username"
         />
         @if (loginForm.controls.username.touched && loginForm.controls.username.invalid) {
@@ -27,7 +27,7 @@
           id="password"
           type="password"
           formControlName="password"
-          class="w-full rounded-2xl border border-slate-700 bg-mist-400 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-b-blue-900"
+          class="w-full rounded-2xl border border-slate-700 bg-mist-300 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-b-blue-900"
           placeholder="Enter your password"
         />
         @if (loginForm.controls.password.touched && loginForm.controls.password.invalid) {

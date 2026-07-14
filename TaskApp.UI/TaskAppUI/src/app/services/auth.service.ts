@@ -1,13 +1,10 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map, of, tap } from 'rxjs';
-import {
-  BaseResponse,
-  LoginRequest,
-  LoginResponse,
-  SignUpRequest,
-  User
-} from '../models/login.model';
+import { User } from '../entities/user.model';
+import { BaseResponse } from '../entities';
+import { LoginResponse } from '../entities/login-response.model';
+import { Login } from '../entities/login.model';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +29,7 @@ export class AuthService {
     this.currentUser.set(null);
   }
 
-  login(payload: LoginRequest): Observable<BaseResponse<LoginResponse>> {
+  login(payload: Login): Observable<BaseResponse<LoginResponse>> {
     return this.http.post<BaseResponse<LoginResponse>>(`${this.baseUrl}/login`, payload).pipe(
       tap((response) => {
         if (response.success && response.data?.token) {
@@ -42,7 +39,7 @@ export class AuthService {
     );
   }
 
-  signUp(payload: SignUpRequest): Observable<BaseResponse<User>> {
+  signUp(payload: User): Observable<BaseResponse<User>> {
     return this.http.post<BaseResponse<User>>(`${this.baseUrl}/sign-up`, payload);
   }
 
@@ -63,7 +60,7 @@ export class AuthService {
     }
 
     return this.profile().pipe(
-      map((response) => response.success && response.data !== null),
+      map((response) => (response.success && response.data !== null)),
       tap((isValid) => {
         if (!isValid) {
           this.clearToken();

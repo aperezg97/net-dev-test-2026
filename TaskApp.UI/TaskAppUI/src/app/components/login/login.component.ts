@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoginRequest } from '../../models/login.model';
 import { AuthService } from '../../services/auth.service';
+import { Login } from 'src/app/entities/login.model';
 
 @Component({
   selector: 'app-login',
@@ -31,10 +31,9 @@ export class LoginComponent {
     this.isSubmitting.set(true);
     this.errorMessage.set(null);
 
-    const payload = new LoginRequest(
-      this.loginForm.controls.username.value,
-      this.loginForm.controls.password.value
-    );
+    const payload = new Login();
+    payload.user = this.loginForm.controls.username.value;
+    payload.pass = this.loginForm.controls.password.value;
 
     this.authService.login(payload).subscribe({
       next: (response) => {
