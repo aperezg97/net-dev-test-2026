@@ -1,3 +1,7 @@
 <Solution>
   <Project Path="TaskApp.Api/TaskApp.Api.csproj" />
+  <Project Path="TaskApp.Business/TaskApp.Business.csproj" />
+  <Project Path="TaskApp.Data/TaskApp.Data.csproj" />
+  <Project Path="TaskApp.Entities/TaskApp.Entities.csproj" />
+  <Project Path="TaskApp.Tests/TaskApp.Tests.csproj" />
 </Solution>

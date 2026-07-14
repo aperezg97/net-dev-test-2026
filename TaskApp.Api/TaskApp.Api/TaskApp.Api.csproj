@@ -10,4 +10,9 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.9" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TaskApp.Business\TaskApp.Business.csproj" />
+    <ProjectReference Include="..\TaskApp.Entities\TaskApp.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

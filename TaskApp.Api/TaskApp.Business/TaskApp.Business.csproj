@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TaskApp.Data\TaskApp.Data.csproj" />
+    <ProjectReference Include="..\TaskApp.Entities\TaskApp.Entities.csproj" />
+  </ItemGroup>
+
+</Project>
