@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using TaskApp.Data.Contexts;
@@ -35,7 +36,7 @@ namespace TaskApp.Data.Repositories
 
         public List<Entities.Models.Task> GetAllTasks(bool activeOnly)
         {
-            var iqueryable = _applicationDbContext.Tasks.AsQueryable();
+            var iqueryable = _applicationDbContext.Tasks.Include(x => x.AssignedTo).AsQueryable();
             if (activeOnly)
             {
                 iqueryable = iqueryable.Where(t => t.IsActive);

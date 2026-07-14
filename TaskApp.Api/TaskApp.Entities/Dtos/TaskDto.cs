@@ -21,6 +21,7 @@ namespace TaskApp.Entities.Dtos
                 Description = task.Description,
                 DueDate = task.DueDate,
                 AssignedToId = task.AssignedToId,
+                AssignedTo = task.AssignedTo != null ? UserDto.FromUser(task.AssignedTo) : null,
                 StatusId = task.StatusId,
                 Status = task.Status != null ? new StatusCatalogItemDto
                 {

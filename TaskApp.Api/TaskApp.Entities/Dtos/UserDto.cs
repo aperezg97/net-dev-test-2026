@@ -12,7 +12,7 @@ namespace TaskApp.Entities.Dtos
 
         public IEnumerable<TaskDto> Tasks { get; set; } = new HashSet<TaskDto>();
 
-        public static UserDto FromUser(Models.User user)
+        public static UserDto FromUser(Models.User user, bool mapTasks = false)
         {
             return new UserDto
             {
@@ -24,7 +24,7 @@ namespace TaskApp.Entities.Dtos
                 Email = user.Email,
                 CreatedAt = user.CreatedAt,
                 UpdatedAt = user.UpdatedAt,
-                Tasks = user.Tasks.Select(t => TaskDto.FromTask(t)).ToList()
+                Tasks = mapTasks ? user.Tasks.Select(TaskDto.FromTask).ToList() : [],
             };
         }
     }
