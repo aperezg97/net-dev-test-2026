@@ -68,29 +68,6 @@ export class KanbanComponent implements OnInit {
   }
 
   public drop(event: CdkDragDrop<string[]>) {
-    console.log({ event });
-    // 1. Get the exact value/object being dragged
-    const movedItem = event.item.data;
-
-    // 2. Identify source and destination lists by their structural array reference
-    const sourceArray = event.previousContainer.data;
-    const destinationArray = event.container.data;
-
-    // 3. Track index differences
-    const originIndex = event.previousIndex;
-    const finalIndex = event.currentIndex;
-
-    console.log({
-      movedItem,
-      sourceArray,
-      destinationArray,
-      originIndex,
-      finalIndex,
-    });
-
-    // Example Log: "Moved 'Fix bike brakes' from position 1 to position 3"
-    console.log(`Moved '${JSON.stringify(destinationArray)}' from array ${sourceArray} position ${originIndex} to destinationArray ${destinationArray} position ${finalIndex}`);
-
     if (
       event.previousContainer === event.container &&
       event.previousIndex === event.currentIndex
@@ -148,7 +125,6 @@ export class KanbanComponent implements OnInit {
         updatedTasks = updatedTasks.concat(updated);
       }
     }
-    console.log({ updatedTasks });
     if (updatedTasks && updatedTasks.length) {
       this.updateTasks(updatedTasks);
     }
