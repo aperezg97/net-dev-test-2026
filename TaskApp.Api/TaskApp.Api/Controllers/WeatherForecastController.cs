@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskApp.Api;
 
-namespace TaskApp.Api.Controllers
+namespace TaskApp.Controllers
 {
     [ApiController]
     [Route("[controller]")]
